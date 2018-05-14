@@ -1,0 +1,19 @@
+*{
+	margin:0;
+	padding: 0;
+}
+.table{
+	width:1000px;
+	margin: 0 auto;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 60px;
+	
+}
+.table-th{
+	font-size:24px;
+}
+.row1{
+	font-size:30px;
+}

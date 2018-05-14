@@ -1,0 +1,57 @@
+/*使用css+div实现table效果的布局
+ *每个td使用float:left;
+ *在行末尾使用 clear:both 以使整个行有高度和宽度
+ */
+
+{
+	margin:0;
+	padding: 0;
+}
+.table{
+	width:1000px;
+	margin:0 auto;
+	line-height: 40px;
+}
+.row1-td {
+	float:left;
+	width:150px;
+	height:500px;
+	background-color: red;
+	margin-right: 20px;
+}
+.table-th{
+	font-size:24px;
+}
+/*.table{  
+	width:1000px;
+	margin:0 auto;  
+    border:1px solid gainsboro;        
+    line-height:40px; 
+    box-sizing:border-box;  
+    -moz-box-sizing:border-box;  Firefox   
+    -webkit-box-sizing:border-box; /* Safari */   
+}  */
+/*div.table .row{    
+    clear:both;    
+    overflow:hidden;    
+    width:100%;  
+    border-bottom:1px solid gainsboro;  
+} */
+/*设置简历行*/
+/*.row1{
+	background-color:grey;
+	width:100%;
+	height:50px;
+	color: white;
+	padding-left: 10px;
+}     */
+/*.table-td{    
+    border-left:1px solid gainsboro;    
+    float:left;  
+    margin-bottom:-1000px;    
+    padding-bottom:1000px; 
+}  */
+/*.th{
+	background-color:darkgray;
+}
+*/
