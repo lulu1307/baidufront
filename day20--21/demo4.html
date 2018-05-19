@@ -20,65 +20,44 @@
     	 */
     	var btn=document.querySelector('#fade-btn')
     	var obj=document.querySelector('#fade-obj')
-    	var fade = new Fade();
-    	btn.addEventListener("click",function(){
-    		fade.hide(obj)
-    	},false)
-    	btn.addEventListener("click",function(){
-    		fade.show(obj)
-    	},false)
-		var Fadeflag = true;
-		function Fade() {
-			/**
-			 * 淡出效果
-			 * @param {Object} obj
-			 */
-			this.hide = function(obj) {
-				var num = 10;
-			    if (Fadeflag) {
-			        var st = setInterval(function(){
-			            num--;
-			            Fadeflag = false;
-			            obj.style.opacity = num/10;
-			            if (num<=0) {
-			                clearInterval(st);
-			                Fadeflag = true;
-			                btn.innerHTML='淡入'
-			               
-			            }
-			        },30);
-			    }
-			}
-			/**
-			 * 淡入效果
-			 * @param {Object} obj
-			 */
-			this.show = function(obj) {
-				var num = 0;
-			    if (Fadeflag) {
-			        var st = setInterval(function(){
-			            num++;
-			            Fadeflag = false;
-			            obj.style.opacity = num/10;
-			            if (num>=10) {
-			                clearInterval(st);
-			                Fadeflag = true;
-			                 btn.innerHTML='淡出'
-			                
-			            }
-			        },30);
-			    }
-			}
-			
-		}
- 	
-  /* 
-   * 参数说明 
-   * elem==>需要淡入的元素 
-   * speed==>淡入速度,正整数(可选) 
-   * opacity==>淡入到指定的透明度,0~100(可选) 
-   */ 
-  
- 
+    	var flag=1
+    	var time1
+    	var time2
+    	var num=10
+    	btn.onclick=function(){
+    		btn.disabled=true
+    		if(flag==1){
+    			time1=setInterval("fadeOut()",200)
+    		}
+    		if(flag==0){
+    			time2=setInterval("fadeIn()",200)
+    		}
+    	}
+    	//淡出
+    	function fadeOut(){
+    		if(num>=0){
+    			obj.style.opacity=num/10
+    			num--
+    		}
+    		else{
+    			clearInterval(time1)
+    			btn.disabled=false
+    			btn.innerHTML='淡入'
+    			flag=0
+    		}
+    	}
+    	//淡入
+    	function fadeIn(){
+    		if(num<=10){
+    			obj.style.opacity=num/10
+    			num++
+    		}
+    		else{
+    			clearInterval(time2)
+    			btn.disabled=false
+    			btn.innerHTML='淡出'
+    			flag=1
+    		}
+    	}
     </script>
 </html>
