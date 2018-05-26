@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		 <style>
+		 *{
+		  box-sizing: border-box;
+		  font-size: 16px;
+		}
+		
+		.wrapper {
+		  width: 200px;
+		  margin: 0 auto;
+		}
+		
+		input {
+		  width: 100%;
+		  padding-left: 5px;
+		}
+		
+		.email-sug {
+		  overflow: hidden;
+		  width: 100%;
+		  margin: 0;
+		  padding: 0;
+		  list-style: none;
+		}
+		
+		.email-sug li {
+		  padding-left: 5px;
+		  border-left: 1px solid #ccc;
+		  border-right: 1px solid #ccc;
+		  cursor: pointer;
+		  line-height: 1.5;
+		}
+		
+		.email-sug li:last-child {
+		  border-bottom: 1px solid #ccc;
+		}
+		
+		.email-sug li:hover {
+		  background-color: lightblue;
+		}
+		 </style>
+		
+	</head>
+	<body>
+		<div class="wrapper">
+    	<input id="email-input" type="text">
+    	<ul id="email-sug-wrapper" class="email-sug"></ul>
+		</div>
+		<script>
+			var postfixList = ['163.com', 'gmail.com', '126.com', 'qq.com', '263.net']
+			var email_input=document.getElementById('email-input')
+			var ul=document.getElementById('email-sug-wrapper')
+			var nowSelectIndex = 0//默认选中第一个提示的邮箱地址
+			//鼠标聚焦在文本框
+			email_input.focus()
+			email_input.addEventListener("keyup",function(e) {
+            //如果按键不是上下及回车，重置选中状态
+            var key = e.keyCode
+            if (key!=13 && key!=38 && key!=40) {
+                resetSelectTip()
+            }
+            //如果按的是下箭头
+            if (key == 40) {
+                var numLi = document.querySelectorAll("li").length
+                if (nowSelectIndex < numLi-1) {
+                    nowSelectIndex ++
+                } else {
+                    nowSelectIndex = 0
+                }
+            }
+            //如果按的是上键
+            if (key == 38) {
+                if (nowSelectIndex == 0) {
+                    var numLi = document.querySelectorAll("li").length;
+                    nowSelectIndex = numLi - 1
+                } else {
+                    nowSelectIndex--
+                }
+            }
+            //如果按的是回车键
+            if (key == 13) {
+                var liText = document.querySelectorAll("li")[nowSelectIndex].innerHTML
+                email_input.value = liText
+                hide()
+            }
+            addContent()
+            isHide()
+        })
+			//inputDom的输入监听 = function() {
+    			//获取用户输入，生成提示框中的提示内容，将提示内容添加到email-sug-wrapper中
+    			//控制email-sug-wrapper的显示/隐藏状态
+			//}
+			 ul.addEventListener("click",function(e) {
+            var event = e || window.e
+            var target = event.target || event.srcElement;
+            if (target.nodeName.toLowerCase() == 'li') {
+                var liContent = target.innerText
+                email_input.value = liContent
+                hide()
+            }
+        })
+        //重置Li的选中状态
+        function resetSelectTip() {
+            nowSelectIndex  = 0
+        }
+        
+			//function 获取用户输入() {
+          	 	// 拿到input输入框的输入内容trim后返回
+             // }
+			function getInputValue() {
+				//trim()方法：创建一个字符串的副本，删除前置及后缀的所有空格然后返回结果
+				//支持的浏览器有：IE9+、Firefox3.5+、Safari5+、opera10.5+和Chrome
+				//如何考虑兼容性问题？？?
+			    return email_input.value.trim()
+			}
+			//function 生成提示框中的提示内容() {
+    			//获取用户输入
+    			//遍历postfixList {
+      				  //把用户输入和每一个postfix进行结合成为每一个Li
+   				// }
+    			//返回生成的提示内容
+			//}
+			function hintContent() {
+			   // 获取用户输入
+			   var inputValue=getInputValue()
+			   var aIndex=inputValue.indexOf('@')
+			   var a=[]
+			   var defaultStr=[]
+			   //如果输入内容含有@
+			   if(aIndex>-1){
+			   		//获取@之前的字符串
+			   		var beforeStr=inputValue.substring(0,aIndex+1)
+			   		//获取@之后的字符串
+			   		var afterStr=inputValue.substring(aIndex+1)
+			   }
+			   //遍历postfixList
+			   for(var i=0;i<postfixList.length;i++){
+			   		if(afterStr){
+			   			if(postfixList[i].indexOf(afterStr)==0){
+			   				a.push(beforeStr+postfixList[i])
+			   			}
+			   		}else{
+			   				a.push((beforeStr||inputValue)+postfixList[i])
+			   			}
+			   			//上面两种情况不匹配时
+			   			defaultStr.push((beforeStr||inputValue)+postfixList[i])		
+			   }
+			   // 返回生成的提示内容
+			   return (a.length>-1)?a:defaultStr
+			}
+			// function 将提示内容添加到email-sug-wrapper中() {
+        	// 获取生成提示框中的提示内容
+            // 将内容添加到email-sug-wrapper中
+            // }
+			function addContent() {
+			    //获取生成提示框中的提示内容
+			    var outPut=hintContent()
+			    //将内容添加到email-sug-wrapper中
+			    ul.innerHTML=''
+			    for(var i=0,len=outPut.length;i<len;i++){
+			    	var oli=document.createElement('li')
+			    	oli.innerHTML=outPut[i]
+			    	ul.appendChild(oli)
+			    }
+			    document.querySelectorAll('li')[nowSelectIndex ].style.backgroundColor = "pink"
+			}
+			 // function 控制email-sug-wrapper的显示/隐藏状态() {
+        	//  	if 用户输入为空 {
+            //         隐藏提示框
+            //  	} else {
+            //         显示提示框
+            //  	}
+            // }
+			function isHide() {
+			    if(getInputValue()==''){
+			        //如果输入为空，隐藏提示框
+			        hide()
+			    } else {
+			       // 显示提示框
+			      dispaly()
+			    }
+			}
+			// function 隐藏提示框() {
+        	// 做具体隐藏提示框的操作
+            // }
+			function hide() {
+			    //做具体隐藏提示框的操作
+			    ul.style.display='none'
+			}
+			
+			// function 显示提示框() {
+       		//     做具体显示提示框的操作
+            // }
+			function dispaly() {
+			   // 做具体显示提示框的操作
+			   ul.style.display='block'
+			}
+		</script>
+		<script>
+			//封装HtmlUtil工具类，用于处理HTML的encode（转码）和decode（解码）
+		    var HtmlUtil = {
+		        /*1.用浏览器内部转换器实现html转码*/
+		        htmlEncode: function (html) {
+		            //1.首先动态创建一个容器标签元素，如DIV
+		            var temp = document.createElement("div");
+		            //2.然后将要转换的字符串设置为这个元素的innerText(ie支持)或者textContent(火狐，google支持)
+		            (temp.textContent !== undefined) ? (temp.textContent = html) : (temp.innerText = html);
+		            //3.最后返回这个元素的innerHTML，即得到经过HTML编码转换的字符串了
+		            var output = temp.innerHTML;
+		            temp = null;
+		            return output;
+		        },
+		        /*2.用浏览器内部转换器实现html解码*/
+		        htmlDecode: function (text) {
+		            //1.首先动态创建一个容器标签元素，如DIV
+		            var temp = document.createElement("div");
+		            //2.然后将要转换的字符串设置为这个元素的innerHTML(ie，火狐，google都支持)
+		            temp.innerHTML = text;
+		            //3.最后返回这个元素的innerText(ie支持)或者textContent(火狐，google支持)，即得到经过HTML解码的字符串了。
+		            var output = temp.innerText || temp.textContent;
+		            temp = null;
+		            return output;
+		        }
+		    };
+</script>
+	</body>
+</html>
